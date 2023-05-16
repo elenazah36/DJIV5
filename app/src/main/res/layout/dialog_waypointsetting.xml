@@ -54,21 +54,25 @@
             android:orientation="horizontal"
             android:id="@+id/speed"
             android:layout_gravity="center_horizontal">
+
             <RadioButton
                 android:id="@+id/lowSpeed"
-                android:layout_width="wrap_content"
+                android:layout_width="91dp"
                 android:layout_height="wrap_content"
-                android:text="Low"/>
+                android:text="Low" />
+
             <RadioButton
                 android:id="@+id/MidSpeed"
-                android:layout_width="wrap_content"
+                android:layout_width="103dp"
                 android:layout_height="wrap_content"
-                android:text="Mid"/>
-            <RadioButton
-                android:id="@+id/HighSpeed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="High"/>
+                android:text="Mid" />
+
         </RadioGroup>
+
+        <RadioButton
+            android:id="@+id/HighSpeed"
+            android:layout_width="112dp"
+            android:layout_height="wrap_content"
+            android:text="High" />
     </LinearLayout>
 </LinearLayout>
