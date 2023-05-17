@@ -1,63 +1,37 @@
 package com.riis.djiv5.pages
 
-import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.Context
+
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.DocumentsContract
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
-import androidx.annotation.IntDef
-import com.riis.djiv5.pages.DJIFragment
-import com.riis.djiv5.models.WayPointV3VM
 import dji.v5.common.callback.CommonCallbacks
 import dji.v5.common.error.IDJIError
 import dji.v5.utils.common.*
 import java.io.File
-import java.util.*
 
-import com.mapbox.geojson.*
 import com.mapbox.mapboxsdk.Mapbox
-import com.mapbox.mapboxsdk.annotations.IconFactory
 import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.maps.SupportMapFragment
 
-import dji.sdk.keyvalue.value.common.LocationCoordinate2D
-import dji.v5.manager.aircraft.waypoint3.model.WaypointMissionExecuteState
-import java.io.IOException
-import kotlin.collections.ArrayList
-import android.content.DialogInterface
 
-import android.content.DialogInterface.OnMultiChoiceClickListener
-import android.graphics.Bitmap
+import dji.v5.manager.aircraft.waypoint3.model.WaypointMissionExecuteState
+import kotlin.collections.ArrayList
 import android.graphics.Color
-import android.os.Build
-import android.os.storage.StorageManager
-import android.os.storage.StorageVolume
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dji.flysafe.mapkit.core.core.models.DJIBitmapDescriptor
 import com.dji.flysafe.mapkit.core.core.models.DJILatLng
 import com.dji.flysafe.mapkit.core.core.models.annotations.DJIMarkerOptions
 import com.dji.flysafe.mapkit.core.core.models.annotations.DJIPolylineOptions
-import com.dji.industry.mission.DocumentsUtils
-import com.example.mapviewdemo.R
-import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.mapboxsdk.maps.Style
+import com.riis.djiv5.R
+import com.riis.djiv5.models.WayPointObject
 
 
 import dji.sdk.wpmz.jni.JNIWPMZManager
@@ -79,10 +53,9 @@ import java.util.concurrent.ConcurrentHashMap
  * @time 2022/02/27 9:30 上午
  * @description:
  */
-class WayPointV3Fragment : View.OnClickListener, AppCompatActivity(), OnMapReadyCallback {
+class WayPointV3 : View.OnClickListener, AppCompatActivity(), OnMapReadyCallback {
 
 
-    private val wayPointV3VM: WayPointV3VM by activityViewModels()
     private val WAYPOINT_SAMPLE_FILE_NAME: String = "waypointsample.kmz"
     private val WAYPOINT_SAMPLE_FILE_DIR: String = "waypoint/"
     private val WAYPOINT_SAMPLE_FILE_CACHE_DIR: String = "waypoint/cache/"
@@ -199,12 +172,12 @@ class WayPointV3Fragment : View.OnClickListener, AppCompatActivity(), OnMapReady
 
     private fun initView(savedInstanceState: Bundle?) {
         //sp_map_switch.adapter = wayPointV3VM.getMapSpinnerAdapter()
-        wayPointV3VM.addMissionStateListener() {
+        WayPointObject.addMissionStateListener() {
             //mission_execute_state_tv?.text = "Mission Execute State : ${it.name}"
             //btn_mission_upload.isEnabled = it == WaypointMissionExecuteState.READY
             curMissionExecuteState = it
         }
-        wayPointV3VM.addWaylineExecutingInfoListener(object :WaylineExecutingInfoListener {
+        WayPointObject.addWaylineExecutingInfoListener(object :WaylineExecutingInfoListener {
             override fun onWaylineExecutingInfoUpdate(it: WaylineExecutingInfo) {
                 //wayline_execute_state_tv?.text = "Wayline Execute Info WaylineID:${it.waylineID} \n" +
                         "WaypointIndex:${it.currentWaypointIndex} \n" +
@@ -220,7 +193,7 @@ class WayPointV3Fragment : View.OnClickListener, AppCompatActivity(), OnMapReady
         });
 
 
-        wayPointV3VM.addWaypointActionListener(object :WaypointActionListener{
+        WayPointObject.addWaypointActionListener(object :WaypointActionListener{
             override fun onExecutionStart(actionId: Int) {
                 //waypint_action_state_tv?.text = "onExecutionStart: ${actionId} "
             }
@@ -234,7 +207,7 @@ class WayPointV3Fragment : View.OnClickListener, AppCompatActivity(), OnMapReady
         upload.setOnClickListener {
             val waypointFile = File(curMissionPath)
             if (waypointFile.exists()) {
-                wayPointV3VM.pushKMZFileToAircraft(curMissionPath)
+                WayPointObject.pushKMZFileToAircraft(curMissionPath)
             } else {
                 ToastUtils.showToast("Mission file not found!");
             }
@@ -260,7 +233,7 @@ class WayPointV3Fragment : View.OnClickListener, AppCompatActivity(), OnMapReady
 
 
         start.setOnClickListener {
-            wayPointV3VM.startMission(
+            WayPointObject.startMission(
                 FileUtils.getFileName(curMissionPath, WAYPOINT_FILE_TAG),
                 selectWaylines,
                 object : CommonCallbacks.CompletionCallback {
@@ -276,7 +249,7 @@ class WayPointV3Fragment : View.OnClickListener, AppCompatActivity(), OnMapReady
         }
 
         pause.setOnClickListener {
-            wayPointV3VM.pauseMission(object : CommonCallbacks.CompletionCallback {
+            WayPointObject.pauseMission(object : CommonCallbacks.CompletionCallback {
                 override fun onSuccess() {
                     ToastUtils.showToast("pauseMission Success")
                 }
@@ -289,7 +262,7 @@ class WayPointV3Fragment : View.OnClickListener, AppCompatActivity(), OnMapReady
         }
 
         resume.setOnClickListener {
-            wayPointV3VM.resumeMission(object : CommonCallbacks.CompletionCallback {
+            WayPointObject.resumeMission(object : CommonCallbacks.CompletionCallback {
                 override fun onSuccess() {
                     ToastUtils.showToast("resumeMission Success")
                 }
@@ -307,7 +280,7 @@ class WayPointV3Fragment : View.OnClickListener, AppCompatActivity(), OnMapReady
                 return@setOnClickListener
             }
             selectWaylines.clear()
-            var waylineids = wayPointV3VM.getAvailableWaylineIDs(curMissionPath)
+            var waylineids = WayPointObject.getAvailableWaylineIDs(curMissionPath)
             //showMultiChoiceDialog(waylineids)
         }
 
@@ -331,7 +304,7 @@ class WayPointV3Fragment : View.OnClickListener, AppCompatActivity(), OnMapReady
                 ToastUtils.showToast("Mission not start")
                 return@setOnClickListener
             }
-            wayPointV3VM.stopMission(
+            WayPointObject.stopMission(
                 FileUtils.getFileName(curMissionPath, WAYPOINT_FILE_TAG),
                 object : CommonCallbacks.CompletionCallback {
                     override fun onSuccess() {
@@ -411,7 +384,7 @@ class WayPointV3Fragment : View.OnClickListener, AppCompatActivity(), OnMapReady
     }
 
     private fun initData() {
-        wayPointV3VM.listenFlightControlState()
+       WayPointObject.listenFlightControlState()
         /*wayPointV3VM.flightControlState.observe(viewLifecycleOwner) {
             it?.let {
                 //wayline_aircraft_height?.text = String.format("Aircraft Height: %.2f", it.height)
@@ -431,10 +404,10 @@ class WayPointV3Fragment : View.OnClickListener, AppCompatActivity(), OnMapReady
 
     override fun onDestroy() {
         super.onDestroy()
-        wayPointV3VM.cancelListenFlightControlState()
-        wayPointV3VM.removeAllMissionStateListener()
-        wayPointV3VM.clearAllWaylineExecutingInfoListener()
-        wayPointV3VM.clearAllWaypointActionListener()
+        WayPointObject.cancelListenFlightControlState()
+        WayPointObject.removeAllMissionStateListener()
+        WayPointObject.clearAllWaylineExecutingInfoListener()
+        WayPointObject.clearAllWaypointActionListener()
 
         mDisposable?.let {
             if (!it.isDisposed) {

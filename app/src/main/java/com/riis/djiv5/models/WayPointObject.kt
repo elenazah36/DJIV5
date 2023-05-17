@@ -4,6 +4,7 @@ import android.R
 import android.content.Context
 import android.widget.ArrayAdapter
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.riis.djiv5.data.FlightControlState
 import com.riis.djiv5.data.MissionUploadStateInfo
 import dji.sdk.keyvalue.key.*
@@ -27,12 +28,7 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.Disposable
 
 
-/**
- * @author feel.feng
- * @time 2022/02/27 10:10 上午
- * @description:
- */
-class WayPointV3VM : DJIViewModel() {
+object WayPointObject {
     val RadToDeg = 57.295779513082321
     val missionUploadState = MutableLiveData<MissionUploadStateInfo>()
 
@@ -174,7 +170,5 @@ class WayPointV3VM : DJIViewModel() {
     private fun getHeading() = (compassHeadKey.get(0.0)).toFloat()
 
     private fun getHeight(): Double = (altitudeKey.get(0.0))
-
-
 
 }

@@ -7,7 +7,6 @@ repositories {
 }
 
 android {
-    namespace 'com.riis.djiv5'
     compileSdk 33
 
     defaultConfig {
