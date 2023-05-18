@@ -1,4 +1,4 @@
-package com.riis.djiv5
+package com.riis.djiv5.pages
 
 import androidx.appcompat.app.AppCompatActivity
 

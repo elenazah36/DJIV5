@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.riis.djiv5.ConnectionActivity">
+    tools:context="com.riis.djiv5.pages.ConnectionActivity">
 
     <TextView
         android:id="@+id/text_connection_status"
@@ -51,6 +51,17 @@
         android:layout_marginTop="350dp"
         android:background="@drawable/round_btn"
         android:text="Open"
+        android:textColor="@color/colorWhite"
+        android:textSize="20dp"
+        />
+    <Button
+        android:id="@+id/btn_pair"
+        android:layout_width="150dp"
+        android:layout_height="55dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="500dp"
+        android:background="@drawable/round_btn"
+        android:text="Pair"
         android:textColor="@color/colorWhite"
         android:textSize="20dp"
         />

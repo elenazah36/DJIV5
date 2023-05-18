@@ -1,14 +1,10 @@
-package com.riis.djiv5
+package com.riis.djiv5.models
 
 import android.app.Application
 import android.content.Context
-import android.os.Bundle
-import android.util.Log
 import androidx.annotation.NonNull
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.dji.flysafe.util.ContextUtil
 import com.dji.mobileinfra.StringUtils
 import dji.sdk.keyvalue.key.RemoteControllerKey
 import dji.sdk.keyvalue.value.remotecontroller.PairingState
@@ -25,7 +21,6 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
 
     val registerState = MutableLiveData<String>()
     val sdkNews = MutableLiveData<SDKNews>()
-
 
 
     fun registerApp(context: Context, @NonNull callback: SDKManagerCallback) {

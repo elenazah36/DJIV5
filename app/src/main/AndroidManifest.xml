@@ -43,9 +43,9 @@
             android:name="com.riis.djiv5.MainActivity"
             android:exported="true">
         </activity>
-        <activity android:name="com.riis.djiv5.WaypointCameraActivity" />
+        <activity android:name="com.riis.djiv5.pages.WaypointCameraActivity" />
         <activity
-            android:name="com.riis.djiv5.ConnectionActivity"
+            android:name="com.riis.djiv5.pages.ConnectionActivity"
             android:configChanges="orientation"
             android:launchMode="singleTop"
             android:screenOrientation="fullSensor"
