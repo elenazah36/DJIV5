@@ -15,6 +15,7 @@ import dji.v5.et.create
 import dji.v5.et.get
 import dji.v5.manager.SDKManager
 import dji.v5.manager.interfaces.SDKManagerCallback
+import dji.v5.utils.common.ToastUtils
 
 class ConnectionViewModel(application: Application) : AndroidViewModel(application) {
     private val TAG = "myApp"

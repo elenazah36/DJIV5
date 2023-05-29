@@ -62,8 +62,8 @@ class ConnectionActivity : AppCompatActivity() {
             ), 1)
 
         initUI()
-        initMSDKInfoView()
         registerApp()
+        initMSDKInfoView()
 
     }
 
@@ -97,6 +97,7 @@ class ConnectionActivity : AppCompatActivity() {
         model.registerState.observe(this) {
                 mTextConnectionStatus.text = model.registerState.value
         }
+        ToastUtils.showToast(model.registerState.value.toString())
         mBtnPair.setOnClickListener {
             model.doPairing {
                 ToastUtils.showToast(it)
